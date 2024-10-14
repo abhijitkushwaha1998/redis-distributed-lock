@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
-public class RedissonForRedis implements CacheProvider {
+public class RedissonCacheProviderImpl implements CacheProvider {
 
     @Autowired
     private RedissonClient redissonClient;
@@ -24,7 +24,7 @@ public class RedissonForRedis implements CacheProvider {
     public boolean tryLock(final String key, final long waitTimeMillis, final long leaseTimeMillis) {
         val lock = this.redissonClient.getLock(key);
         try {
-            return lock.tryLock(waitTimeMillis, leaseTimeMillis, TimeUnit.SECONDS);
+            return lock.tryLock(waitTimeMillis, leaseTimeMillis, TimeUnit.MILLISECONDS);
         } catch (final InterruptedException e) {
             Thread.currentThread().interrupt();
             return false;
